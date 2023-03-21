@@ -1,7 +1,10 @@
-import * as Three from "./node_modules/three/build/three.module.js"
-// import {OrbitControls} from "./node_modules/three/examples/jsm/controls/OrbitControls.js"
+import * as Three from "../node_modules/three/build/three.module.js"
+import {OrbitControls} from "../node_modules/three/examples/jsm/controls/OrbitControls.js"
+import * as dat from "dat.gui"
 
 const scene = new Three.Scene()
+
+renderer.shadowMap.enabled = true
 
 // const geometry = new Three.BoxGeometry(5,4,3)
 function createWheels(){
@@ -16,9 +19,6 @@ function createBody(){
     const body = new Three.Mesh(new Three.BoxGeometry(30,5,17), new Three.MeshLambertMaterial({color:0xffffff}))
     return body
 }
-// mesh.position.set(0,0,0)
-// mesh.rotateX(90/180 * Math.PI)
-// scene.add(mesh)
 
 function createCar(){
     const car = new Three.Group()
@@ -42,6 +42,16 @@ function createCar(){
 
 }
 
+const planeGeometry = new Three.PlaneGeometry(30,30)
+const planeMaterial = new Three.MeshLambertMaterial(
+{ color:0x333333,
+  side: Three.DoubleSide})
+const plane = new Three.Mesh(planeGeometry, planeMaterial)
+plane.rotateX(-0.5 * Math.PI)
+scene.add(plane)
+
+const gridHelper = new Three.GridHelper(30)
+
 const car = createCar()
 scene.add(car)
 
@@ -64,8 +74,12 @@ const camera = new Three.OrthographicCamera(
     1,
     1000
 )
+
+const orbit = new OrbitControls(camera, renderer.domElement)
+
 camera.position.set(10,100,10)
 camera.lookAt(0,0,0)
+orbit.update()
 
 const renderer = new Three.WebGLRenderer({antialias: true})
 renderer.setSize(window.innerWidth, window.innerHeight)
@@ -73,13 +87,11 @@ renderer.render(scene, camera)
 
 document.body.appendChild(renderer.domElement)
 
-// const control = new Three.OrbitControls(camera, renderer.domElement)
-
 
 // function animate(){
 //     requestAnimationFrame(animate)
+
 //     renderer.render(scene, camera)
-//     control.update()
 
 // }
-// animate()
+// renderer.setAnimationLoop(animate)
