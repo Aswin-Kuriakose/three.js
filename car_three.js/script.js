@@ -25,7 +25,9 @@ function createRim() {
 
 function createBody() {
     
-    const body = new THREE.Mesh (new THREE.BoxGeometry(30,5,17), new THREE.MeshLambertMaterial({color:0xeeeeee}))
+    const metalTexture = new THREE.TextureLoader().load("./metal-texture.jpg")
+    // const body = new THREE.Mesh (new THREE.BoxGeometry(30,5,17), new THREE.MeshLambertMaterial({color:0xeeeeee}))
+    const body = new THREE.Mesh (new THREE.BoxGeometry(30,5,17), new THREE.MeshLambertMaterial({ map: metalTexture }))
     return body
 
 }
@@ -80,10 +82,16 @@ function createCar() {
 
 }
 
-const planeGeometry = new THREE.PlaneGeometry ( 100,100 )
-const planeMaterial = new THREE.MeshLambertMaterial (
-{ color: 0xbbbbbb,
-  side: THREE.DoubleSide})
+const texture = new THREE.TextureLoader().load("./road.jpg")
+
+const planeGeometry = new THREE.PlaneGeometry ( 100, 100 )
+// const planeMaterial = new THREE.MeshLambertMaterial (
+// { color: 0xbbbbbb,
+//   side: THREE.DoubleSide})
+const planeMaterial = new THREE.MeshBasicMaterial ({
+    map: texture,
+    side: THREE.DoubleSide
+})
 const plane = new THREE.Mesh(planeGeometry, planeMaterial)
 plane.position.set(0,-5,0)
 plane.rotateX(-0.5 * Math.PI)
@@ -131,10 +139,12 @@ camera.position.set(30,30,100)
 camera.lookAt(0,0,0)
 camera.updateProjectionMatrix()
 const orbit = new THREE.OrbitControls(camera, renderer.domElement)       
-orbit.update()
+orbit.maxPolarAngle = Math.PI / 2
 
 function animate() {
     requestAnimationFrame(animate);
+    orbit.autoRotate = true
+    orbit.update()
     renderer.render(scene, camera);
   }
   animate()

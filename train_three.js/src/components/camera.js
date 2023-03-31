@@ -1,4 +1,5 @@
-import { PerspectiveCamera } from "https://cdn.jsdelivr.net/npm/three@0.135.0/build/three.min.js"
+// import { PerspectiveCamera } from "https://cdn.jsdelivr.net/npm/three@0.135.0/build/three.min.js"
+import { PerspectiveCamera } from 'https://cdn.skypack.dev/three@0.136.0/build/three.module.js'
 
 const aspectRatio = window.innerWidth / window.innerHeight
 
